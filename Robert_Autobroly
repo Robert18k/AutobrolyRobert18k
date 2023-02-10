@@ -1,19 +1,27 @@
---This Autobroly was made by Robert18k#3438. Big W to superior48#9447 Who helped me create this.
+--Made by Robert18k#3438
+--DM IF ANY BUGS
+--LowGFX, and UniGodMode Are not Mine!
 Settings = {
 
     RejoinTime = 30,
     GrabChecker = 15,
     AntiLeach = false,
-    ChargingDur = 0,
-    KeyTransform = "g",
     PromoteMe = true,
+    CharDur = 0,
+    KeyToTrans = "g",
     waitTime = 0,
+    Earth = false,
     FOV = 120,
     LowGFX = false,
     AutoPunch = true,
     AnimateFreeze = true,
+    UniGodMode = true,
+    FreezeEXP = false,
 
 }
+--AutoStat--
+local AutoStat = true
+local stat = "Phys-Damage" --[[ Phys-Resist, Ki-Max, Health-Max, Ki-Resist, Ki-Damage, Speed; all stats ]]--
 
 Moves = {
     "Meteor Crash";
@@ -27,7 +35,14 @@ Moves = {
     "Sweep Kick";
     "God Slicer";
     }
-
+--[Freezex2]
+if Settings.FreezeEXP == true then
+			game:GetService("RunService").Stepped:Connect(function()
+				if game:GetService("Players").LocalPlayer.Character:FindFirstChild("True") then
+					game:GetService("Players").LocalPlayer.Character:FindFirstChild("True"):Destroy()
+				end
+			end)
+		end
 
     --[Wait Time]---------
     repeat
@@ -39,6 +54,7 @@ until game.Players.LocalPlayer.Character
 game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
 game.Players.LocalPlayer.Character:WaitForChild("Humanoid")
 game.Players.LocalPlayer.Character:WaitForChild("PowerOutput")
+game.Players.LocalPlayer:WaitForChild("Backpack")
 wait(Settings.waitTime)
 --Whitelist--
 local HWIDTable = loadstring(game:HttpGet("https://pastebin.com/raw/E9xt4p8t"))()
@@ -58,7 +74,7 @@ end
         "SendNotification",
         {
             Title = "Made by Robert18k#3438",
-            Text = "Autobroly V1",
+            Text = "Autobroly",
             Duration = "30"
         }
     )
@@ -114,7 +130,24 @@ for i, e in pairs(l:GetChildren()) do
     end
 end
 end
-
+--Earth--
+if Settings.Earth == true and game.PlaceId == Queue then
+    game:GetService("TeleportService"):Teleport(Earth, LocalPlayer)
+end
+if AutoStat == true then
+    repeat wait()
+game.Players.LocalPlayer.Backpack.ServerTraits.AttemptUpgrade:FireServer(game.Players.LocalPlayer.PlayerGui.HUD.Bottom.Stats[stat])
+until game.Players.LocalPlayer.PlayerGui.HUD.Bottom.Stats.StatPoints.Val.Text == "0"
+end
+if Settings.Earth == true and game.PlaceId == Earth then
+    local plr = game.Players.LocalPlayer
+        game.Players.LocalPlayer.Character.PowerOutput:Destroy()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2751.67725, 3944.85986, -2272.62622)
+        game:GetService("Workspace").Live[plr.Name].Humanoid.Animator:Destroy()
+        wait(75)
+	game:GetService("TeleportService"):Teleport(Earth, LocalPlayer)
+	end
+    
 
 
 ------Queue-----
@@ -128,8 +161,12 @@ if game.PlaceId == Queue then
     game.Players.LocalPlayer.PlayerGui.HUD.Bottom.Stats.ImageColor3 = Color3.fromRGB(50, 42, 17)  
 game.Players.LocalPlayer.PlayerGui.HUD.Bottom.Stats.Labvel.ImageColor3 = Color3.fromRGB(50, 42, 17)
     game.Players.LocalPlayer.PlayerGui:WaitForChild("HUD").Bottom.Stats.Race.Val.Text = "Da Biggest Bird"
-    end
-   
+end
+if AutoStat == true then
+    repeat wait()
+game.Players.LocalPlayer.Backpack.ServerTraits.AttemptUpgrade:FireServer(game.Players.LocalPlayer.PlayerGui.HUD.Bottom.Stats[stat])
+until game.Players.LocalPlayer.PlayerGui.HUD.Bottom.Stats.StatPoints.Val.Text == "0"
+end
     if game.PlaceId == Earth then
         game:GetService("TeleportService"):Teleport(Queue, LocalPlayer)
     end
@@ -141,7 +178,55 @@ game.Players.LocalPlayer.PlayerGui.HUD.Bottom.Stats.Labvel.ImageColor3 = Color3.
         game:GetService("TeleportService"):Teleport(Queue, LocalPlayer)
     end
     -----BROLY------------------------------------------------------------------
-    repeat wait() until game:IsLoaded() and game.Players.LocalPlayer:WaitForChild("Backpack")
+    if Settings.UniGodMode == true then
+        getgenv().toggled = true
+
+repeat
+    task.wait()
+until game:IsLoaded()
+repeat
+    task.wait()
+until game.Players.LocalPlayer.Character
+game.Players.LocalPlayer.Character:WaitForChild("Prestige")
+task.wait(.2)
+function uni_god()
+    char = game.Players.LocalPlayer.Character
+    bp = game.Players.LocalPlayer.Backpack
+    game.Players.LocalPlayer.Character:WaitForChild("Prestige")
+    task.wait(0.2)
+    local aas = bp:FindFirstChild("Afterimage Strike")
+    if not aas then return print("unsuccessful") end;
+    aas.Parent = char
+    pcall(function()
+        char.PrimaryPart:FindFirstChild("VanishParticle"):Destroy()
+    end);
+    repeat
+        task.wait()
+        aas.Targeter:FireServer(char)
+        aas:Activate()
+    until char:FindFirstChild("i")
+    aas:Deactivate()
+end;
+getgenv().uni_god_hookfunc = false
+if not uni_god_hookfunc then
+    getgenv().uni_god_hookfunc = true
+    old = hookmetamethod(game,'__namecall',function(self,...)
+        nc = getnamecallmethod()
+        args = {...}
+            if nc == "FireServer" and self.Name == "Input" then
+                if args[1][1] == "blockoff" or args[1][1] == "blockon" then
+                    return nil
+                end;
+            end;
+        return old(self,...)
+    end);
+end;
+
+if toggled then
+    uni_god()
+    uni_char_added = game.Players.LocalPlayer.CharacterAdded:connect(uni_god)
+end;
+end
 if game.PlaceId == BrolyPlace then
     game.Workspace.Camera.FieldOfView = (Settings.FOV)
     end
@@ -195,8 +280,8 @@ game:GetService("RunService").RenderStepped:connect(
 end
 end)
 Client.Backpack.ServerTraits.Input:FireServer({"x"}, CFrame.new())
-    wait(Settings.ChargingDur)
-    Client.Backpack.ServerTraits.Transform:FireServer(Settings.KeyTransform)
+    wait(Settings.CharDur)
+    Client.Backpack.ServerTraits.Transform:FireServer(Settings.KeyToTrans)
     wait(.5)
     Client.Backpack.ServerTraits.Input:FireServer({"xoff"}, CFrame.new())
 wait(.5)
@@ -249,6 +334,10 @@ repeat
     end
 end
 until broly.Humanoid.Health <= 1 or Client.Character.Humanoid.Health <= 1
-wait(.2)
+end
+if Settings.Earth == false then
 game:GetService("TeleportService"):Teleport(Queue)
 end
+if Settings.Earth == true then
+    game:GetService("TeleportService"):Teleport(Earth)
+    end
